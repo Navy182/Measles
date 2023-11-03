@@ -66,8 +66,8 @@ void draw() {
   strokeWeight(mouthReset); //1=reset
   color measleColour = color(255, random(0, 84), random(0, 103));
   fill(measleColour);
-  measleX = random(backgroundX , backgroundX+backgroundWidth );
-  measleY = random(backgroundY, backgroundY+backgroundHeight);
+  measleX = random(backgroundX , backgroundX + backgroundWidth );
+  measleY = random(backgroundY, backgroundY + backgroundHeight);
   measleDiameter = random( smallerDimension*1/50, smallerDimension*1/30 );
   noStroke();
   ellipse( measleX, measleY, measleDiameter, measleDiameter );
