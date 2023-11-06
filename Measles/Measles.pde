@@ -7,6 +7,7 @@ float noseX1, noseY1, noseX2, noseY2, noseX3, noseY3;
 float mouthX1, mouthY1, mouthX2, mouthY2, mouthOpen, mouthReset;
 float measleX, measleY, measleDiameter; 
 float smallerDimension;
+float button1X, button1Y, button2X, button2Y, button3X, button3Y, buttonSide;
 color resetColour=#FFFFFF, red=#D31111, blue=#5675C1, green=#58CB1F;
 //
 void setup() {
@@ -43,42 +44,65 @@ void setup() {
   mouthOpen = smallerDimension*1/12;
   mouthOpen = smallerDimension*1/10;
   mouthReset = smallerDimension/smallerDimension; //1=reset
-  
-  //
+ //
   //DIVs
+  rect( backgroundX, backgroundY, backgroundWidth, backgroundHeight ); //Circle ONLY
   ellipse( faceX, faceY, faceDiameter, faceDiameter );
   //4 Inscribed buttons on the background square not on the circle
   //Solve Isolceles leg length to find rect() width and height
   //2x^2 = radius^2
-  rect( backgroundX, backgroundY, smallerDimension/2-sqrt(sq(smallerDimension/2)/2), smallerDimension/2-sqrt(sq(smallerDimension/2)/2) );
-  println( backgroundX, smallerDimension, smallerDimension/2, sq( smallerDimension/2 ), sq( smallerDimension/2 ) /2, sqrt( sq( smallerDimension/2 ) /2 ), smallerDimension/2-sqrt(sq(smallerDimension/2)/2) );
+  buttonSide = smallerDimension/2-sqrt(sq(smallerDimension/2)/2);
+  button1X = backgroundX;
+  button1Y = backgroundY;
+  button2X = backgroundX+faceDiameter-buttonSide;
+  button2Y = button1Y;
+  button3X = button2X;
+  button3Y = backgroundX+faceDiameter-buttonSide;
+  buttonSide = smallerDimension/2-sqrt(sq(smallerDimension/2)/2);
+  rect( button1X, button1Y, buttonSide, buttonSide );
+  rect( button2X, button2Y, buttonSide, buttonSide );
+  rect( button3X, button3Y, buttonSide, buttonSide );
+  println(backgroundX, smallerDimension, smallerDimension/2, sq( smallerDimension/2 ), sq( smallerDimension/2 ) /2, sqrt( sq( smallerDimension/2 ) /2 ), smallerDimension/2-sqrt(sq(smallerDimension/2)/2) );
   //
 } //End setup
 //
 void draw() {
-  rect( backgroundX, backgroundY, backgroundWidth, backgroundHeight ); //Circle ONLY
-  ellipse( faceX, faceY, faceDiameter, faceDiameter );
+  //Text Code
+  //start="Start", stop"STOP", quit=-
   ellipse ( leftEyeX, leftEyeY, eyeDimater, eyeDimater ); //Left Eye
   ellipse ( rightEyeX, rightEyeY, eyeDimater, eyeDimater ); //Right Eye
   triangle( noseX1, noseY1, noseX2, noseY2, noseX3, noseY3 ); //Nose
-  strokeWeight(mouthOpen); 
+  strokeWeight(mouthOpen);
   line( mouthX1, mouthY1, mouthX2, mouthY2 ); //mouth
   strokeWeight(mouthReset); //1=reset
-  color measleColour = color(255, random(0, 84), random(0, 103));
+  //
+  color measleColour = color( 255, random(0, 84), random(0, 103) );
   fill(measleColour);
-  measleX = random(backgroundX , backgroundX + backgroundWidth );
-  measleY = random(backgroundY, backgroundY + backgroundHeight);
-  measleDiameter = random( smallerDimension*1/50, smallerDimension*1/30 );
+  measleDiameter = random( smallerDimension*1/100, smallerDimension*1/30 );
+  measleX = random( backgroundX+(measleDiameter/2), (backgroundX+backgroundWidth)-(measleDiameter/2) );
+  measleY = random( backgroundY+(measleDiameter/2), (backgroundY+backgroundHeight)-(measleDiameter/2) );
+  println( "Start", measleX, measleY, measleDiameter );
+  if ( measleX <= button1X+buttonSide+(measleDiameter/2) && measleY <= button1Y+buttonSide+(measleDiameter/2)) {
+    println("\t\tXhere", measleX, button1X+buttonSide);
+    measleX = random( button1X+buttonSide+(measleDiameter/2), (backgroundX+backgroundWidth)-(measleDiameter/2) );
+  }
+  /*
+  //if ( measleY < button1Y+buttonSide+(measleDiameter/2) ) {
+    println("\t\tYhere", measleY, button1Y+buttonSide);
+    measleY = random( button1Y+buttonSide+(measleDiameter/2), (backgroundY+backgroundHeight)-(measleDiameter/2) );
+  }
+   */
+  //+buttonSide
+  //+buttonSide
+  //if () {}
   noStroke();
+  println( "End", measleX, measleY, measleDiameter );
   ellipse( measleX, measleY, measleDiameter, measleDiameter );
-  stroke(1); //default 1
-  fill( resetColour );
+  stroke(1); //default is 1
+  fill(resetColour);
 } //End draw
 //
 void keyPressed() {
 } //End keyPressed
 //
 void mousePressed() {
-} //End mousePressed
-//
-//End MAIN Program
