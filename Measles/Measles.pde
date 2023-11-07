@@ -1,22 +1,30 @@
+/* Measles To Do List
+ - finish to println of button 1-3
+ - Button 1: start measles code, draw face circle once (singleIF with Boolean)
+ - Button 2: Stop drawing measles code
+ - Button 3: Quit with goodbye screen (delay of draw() code)
+ */
 //Global Variables
-int appWidth, appHeight;
+int appWidth, appHeight, smallerDimension;
 float faceX, faceY, faceDiameter;
 float backgroundX, backgroundY, backgroundWidth, backgroundHeight;
 float leftEyeX, leftEyeY, rightEyeX, rightEyeY, eyeDimater;
 float noseX1, noseY1, noseX2, noseY2, noseX3, noseY3;
 float mouthX1, mouthY1, mouthX2, mouthY2, mouthOpen, mouthReset;
-float measleX, measleY, measleDiameter; 
-float smallerDimension;
+float measleX, measleY, measleDiameter;
 float button1X, button1Y, button2X, button2Y, button3X, button3Y, buttonSide;
-color resetColour=#FFFFFF, red=#D31111, blue=#5675C1, green=#58CB1F;
+color red=#D31111, blue=#5675C1, green=#58CB1F, blackInk=#000000, resetColour=#FFFFFF;
+color hoverOverColour=resetColour;
+String start="Start", stop="STOP", quit="X";
+PFont buttonFont;
 //
 void setup() {
-  size( 600, 400); //fullScreen;
+  size( 600, 400 ); //fullScreen;
   appWidth = width; //displayWidth
   appHeight = height; //displayHeight
   //Ternary Operator
   smallerDimension = (appWidth >= appHeight) ? appHeight : appWidth;
-  println("Smaller Dimension is", smallerDimension);
+  println("Smaller Dimension is", smallerDimension); //Started as local variable
   //
   //Population
   faceX = appWidth*1/2;
@@ -26,10 +34,10 @@ void setup() {
   backgroundY = faceY - faceDiameter*1/2;
   backgroundWidth = faceDiameter;
   backgroundHeight = faceDiameter;
-  leftEyeX = backgroundX + smallerDimension*1/3;
-  leftEyeY = backgroundY + smallerDimension*1/3;
+  leftEyeX = backgroundX+smallerDimension*1/3;
+  leftEyeY = backgroundY+smallerDimension*1/3;
   eyeDimater = smallerDimension*1/10;
-  rightEyeX = backgroundX + smallerDimension*3/4;
+  rightEyeX = backgroundX+smallerDimension*3/4;
   rightEyeY = leftEyeY;
   noseX1 = faceX;
   noseY1 = rightEyeY;
@@ -38,13 +46,13 @@ void setup() {
   noseX3 = rightEyeX;
   noseY3 = faceY;
   mouthX1 = noseX2;
-  mouthY1 = backgroundY + smallerDimension*3/4;
+  mouthY1 = backgroundY+smallerDimension*3/4;
   mouthX2 = noseX3;
   mouthY2 = mouthY1;
   mouthOpen = smallerDimension*1/12;
-  mouthOpen = smallerDimension*1/10;
   mouthReset = smallerDimension/smallerDimension; //1=reset
- //
+  buttonFont = createFont("Harrington", 55);
+  //
   //DIVs
   rect( backgroundX, backgroundY, backgroundWidth, backgroundHeight ); //Circle ONLY
   ellipse( faceX, faceY, faceDiameter, faceDiameter );
@@ -57,18 +65,47 @@ void setup() {
   button2X = backgroundX+faceDiameter-buttonSide;
   button2Y = button1Y;
   button3X = button2X;
-  button3Y = backgroundX+faceDiameter-buttonSide;
-  buttonSide = smallerDimension/2-sqrt(sq(smallerDimension/2)/2);
+  button3Y = backgroundY+faceDiameter-buttonSide;
   rect( button1X, button1Y, buttonSide, buttonSide );
   rect( button2X, button2Y, buttonSide, buttonSide );
   rect( button3X, button3Y, buttonSide, buttonSide );
-  println(backgroundX, smallerDimension, smallerDimension/2, sq( smallerDimension/2 ), sq( smallerDimension/2 ) /2, sqrt( sq( smallerDimension/2 ) /2 ), smallerDimension/2-sqrt(sq(smallerDimension/2)/2) );
   //
 } //End setup
 //
 void draw() {
   //Text Code
-  //start="Start", stop"STOP", quit=-
+  println(button1X, mouseX, button1X+buttonSide, hoverOverColour);
+  if ( mouseX>button1X && mouseX<button1X+buttonSide && mouseY>button1Y && mouseY<button1Y+buttonSide ) { //Buton 1
+    println("here");
+    hoverOverColour = yellow;
+    fill( hoverOverColour );
+    rect( button1X, button1Y, buttonSide, buttonSide );
+    fill( resetColour );
+  } else if ( mouseX>button2X && mouseX<button2X+buttonSide && mouseY>button2Y && mouseY<button2Y+buttonSide ) { //Button 2
+    hoverOverColour = yellow;
+    fill( hoverOverColour );
+    rect( button2X, button2Y, buttonSide, buttonSide );
+  } else if ( mouseX>button3X && mouseX<button3X+buttonSide && mouseY>button3Y && mouseY<button3Y+buttonSide ) { //button 3
+    hoverOverColour = purple;
+    fill( hoverOverColour );
+    rect( button3X, button3Y, buttonSide, buttonSide );
+  } else { //No Buttons
+    hoverOverColour = resetColour;
+    fill( hoverOverColour );
+    rect( button1X, button1Y, buttonSide, buttonSide );
+    rect( button2X, button2Y, buttonSide, buttonSide );
+    rect( button3X, button3Y, buttonSide, buttonSide );
+  }
+  //
+  fill(blackInk);
+  textAlign(CENTER, CENTER); //Align X&Y, see Processing.org / Reference
+  //Values: [ LEFT | CENTER | RIGHT ] & [ TOP | CENTER | BOTTOM | BASELINE ]
+  int size = 21;
+  textFont(buttonFont, size);
+  text( start, button1X, button1Y, buttonSide, buttonSide);
+  text( stop, button2X, button2Y, buttonSide, buttonSide);
+  text( quit, button3X, button3Y, buttonSide, buttonSide);
+  //
   ellipse ( leftEyeX, leftEyeY, eyeDimater, eyeDimater ); //Left Eye
   ellipse ( rightEyeX, rightEyeY, eyeDimater, eyeDimater ); //Right Eye
   triangle( noseX1, noseY1, noseX2, noseY2, noseX3, noseY3 ); //Nose
@@ -81,28 +118,27 @@ void draw() {
   measleDiameter = random( smallerDimension*1/100, smallerDimension*1/30 );
   measleX = random( backgroundX+(measleDiameter/2), (backgroundX+backgroundWidth)-(measleDiameter/2) );
   measleY = random( backgroundY+(measleDiameter/2), (backgroundY+backgroundHeight)-(measleDiameter/2) );
-  println( "Start", measleX, measleY, measleDiameter );
   if ( measleX <= button1X+buttonSide+(measleDiameter/2) && measleY <= button1Y+buttonSide+(measleDiameter/2)) {
-    println("\t\tXhere", measleX, button1X+buttonSide);
     measleX = random( button1X+buttonSide+(measleDiameter/2), (backgroundX+backgroundWidth)-(measleDiameter/2) );
   }
-  /*
-  //if ( measleY < button1Y+buttonSide+(measleDiameter/2) ) {
-    println("\t\tYhere", measleY, button1Y+buttonSide);
-    measleY = random( button1Y+buttonSide+(measleDiameter/2), (backgroundY+backgroundHeight)-(measleDiameter/2) );
-  }
-   */
-  //+buttonSide
-  //+buttonSide
-  //if () {}
   noStroke();
-  println( "End", measleX, measleY, measleDiameter );
   ellipse( measleX, measleY, measleDiameter, measleDiameter );
   stroke(1); //default is 1
   fill(resetColour);
 } //End draw
 //
 void keyPressed() {
+  if ( key==' ' ); //START Space-Bar
+  if ( key=CODED & keyCode==BACKSPACE ); println("stop"); //STOP
+  if ( key=CODED & keyCode==ESC ); println("quit"); //QUIT
 } //End keyPressed
 //
 void mousePressed() {
+  /*
+  if ( mouseX> mouseX< mouseY> mouseY< ); println("start") //START
+  if () println("stop"); //STOP
+  if () println("quit"); //QUIT
+  */
+} //End mousePressed
+//
+//End MAIN Program
