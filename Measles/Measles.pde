@@ -17,6 +17,7 @@ color red=#D31111, blue=#5675C1, green=#58CB1F, blackInk=#000000, resetColour=#F
 color hoverOverColour=resetColour;
 String start="Start", stop="STOP", quit="X";
 PFont buttonFont;
+Boolean measlesON=false;
 //
 void setup() {
   size( 600, 400 ); //fullScreen;
@@ -77,16 +78,16 @@ void draw() {
   println(button1X, mouseX, button1X+buttonSide, hoverOverColour);
   if ( mouseX>button1X && mouseX<button1X+buttonSide && mouseY>button1Y && mouseY<button1Y+buttonSide ) { //Buton 1
     println("here");
-    hoverOverColour = yellow;
+    hoverOverColour = blue;
     fill( hoverOverColour );
     rect( button1X, button1Y, buttonSide, buttonSide );
     fill( resetColour );
   } else if ( mouseX>button2X && mouseX<button2X+buttonSide && mouseY>button2Y && mouseY<button2Y+buttonSide ) { //Button 2
-    hoverOverColour = yellow;
+    hoverOverColour = blue;
     fill( hoverOverColour );
     rect( button2X, button2Y, buttonSide, buttonSide );
   } else if ( mouseX>button3X && mouseX<button3X+buttonSide && mouseY>button3Y && mouseY<button3Y+buttonSide ) { //button 3
-    hoverOverColour = purple;
+    hoverOverColour = green;
     fill( hoverOverColour );
     rect( button3X, button3Y, buttonSide, buttonSide );
   } else { //No Buttons
@@ -118,27 +119,32 @@ void draw() {
   measleDiameter = random( smallerDimension*1/100, smallerDimension*1/30 );
   measleX = random( backgroundX+(measleDiameter/2), (backgroundX+backgroundWidth)-(measleDiameter/2) );
   measleY = random( backgroundY+(measleDiameter/2), (backgroundY+backgroundHeight)-(measleDiameter/2) );
-  if ( measleX <= button1X+buttonSide+(measleDiameter/2) && measleY <= button1Y+buttonSide+(measleDiameter/2)) {
+  //IF runs once, but computer can randomly choose a measlesX that is error
+  //WHILE will repeat until the randomly chosen variable fits
+   while ( measleX <= button1X+buttonSide+(measleDiameter/2) && measleY <= button1Y+buttonSide+(measleDiameter/2)) {
     measleX = random( button1X+buttonSide+(measleDiameter/2), (backgroundX+backgroundWidth)-(measleDiameter/2) );
   }
+  //WHILE only works for BUTTON1, must be repeated for other buttons
   noStroke();
-  ellipse( measleX, measleY, measleDiameter, measleDiameter );
+  if ( ((measleX-faceX)*(measleX-faceX))+((measleY-faceY)*(measleY-faceY)) < sq(((faceDiameter/2)-(measleDiameter/2)))); { //Measle on Circle
+  if( measlesON==true ); ellipse( measleX, measleY, measleDiameter, measleDiameter ); 
+  }
   stroke(1); //default is 1
   fill(resetColour);
 } //End draw
-//
+
 void keyPressed() {
-  if ( key==' ' ); //START Space-Bar
-  if ( key=CODED & keyCode==BACKSPACE ); println("stop"); //STOP
-  if ( key=CODED & keyCode==ESC ); println("quit"); //QUIT
+  if ( key==' ' ) measlesON=true; //START, SPACE-Bar
+  if ( keyCode==BACKSPACE ) measlesON=false; //STOP //Not Needed key==CODED &&
+  if ( keyCode==ESC ) exit(); //QUIT //key==CODED &&
+  //
 } //End keyPressed
 //
 void mousePressed() {
-  /*
-  if ( mouseX> mouseX< mouseY> mouseY< ); println("start") //START
-  if () println("stop"); //STOP
-  if () println("quit"); //QUIT
-  */
+  if ( mouseX>button1X && mouseX<button1X+buttonSide && mouseY>button1Y && mouseY<button1Y+buttonSide ) measlesON=true; //START
+  if ( mouseX>button2X && mouseX<button2X+buttonSide && mouseY>button2Y && mouseY<button2Y+buttonSide ) measlesON=false; //STOP
+  if ( mouseX>button3X && mouseX<button3X+buttonSide && mouseY>button3Y && mouseY<button3Y+buttonSide ) exit(); //QUIT
+  //
 } //End mousePressed
 //
 //End MAIN Program
