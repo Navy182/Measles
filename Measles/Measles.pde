@@ -17,7 +17,7 @@ color red=#D31111, blue=#5675C1, green=#58CB1F, blackInk=#000000, resetColour=#F
 color hoverOverColour=resetColour;
 String start="Start", stop="STOP", quit="X";
 PFont buttonFont;
-Boolean measlesON=false;
+Boolean measlesON=false, splashScreen=false;
 //
 void setup() {
   size( 600, 400 ); //fullScreen;
@@ -131,6 +131,8 @@ void draw() {
   }
   stroke(1); //default is 1
   fill(resetColour);
+   if ( splashScreen==false ) background(0);
+  if ( splashScreen==true ) mealsesProgram();
 } //End draw
 
 void keyPressed() {
